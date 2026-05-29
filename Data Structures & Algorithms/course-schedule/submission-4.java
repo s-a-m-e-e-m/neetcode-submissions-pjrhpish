@@ -1,0 +1,30 @@
+class Solution {
+    public boolean canFinish(int n, int[][] pre) {
+        int[] indegree = new int[n];
+        List<List<Integer>> adj = new ArrayList<>();
+        for(int i=0;i<n;i++) adj.add(new ArrayList<>());
+
+        for(int i=0;i<pre.length;i++){
+            int a = pre[i][0], b = pre[i][1];
+            indegree[a]++;
+            adj.get(b).add(a);
+        }
+
+        Queue<Integer> q = new LinkedList<>();
+        List<Integer> ans = new ArrayList<>();
+        for(int i=0;i<n;i++){
+            if(indegree[i]==0) q.add(i);
+        }
+
+        while(!q.isEmpty()){
+            int node = q.poll();
+            ans.add(node);
+            for(int ele : adj.get(node)){
+                indegree[ele]--;
+                if(indegree[ele]==0) q.add(ele);
+            }
+        }
+
+        return ans.size()==n;
+    }
+}
